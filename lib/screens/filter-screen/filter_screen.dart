@@ -5,6 +5,7 @@ import 'package:filter_options_demo/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'widgets/app_bar_widget.dart';
+import 'widgets/filter_item_heading.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -32,6 +33,31 @@ class _FilterScreenState extends State<FilterScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
+              child: Wrap(
+                children: selectedTaxonomyList
+                    .map((e) => Padding(
+                      padding: const EdgeInsets.only(right: 2.0),
+                      child: FilterChip(
+                          showCheckmark: false,
+                          backgroundColor: ColorResources.TOP_BUTTON_COLOR,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          avatar: Center(child: Icon(Icons.close)),
+                          label: Text(e.name!),
+                          onSelected: (value) {
+                            setState(() {
+                              selectedTaxonomyList.remove(e);
+                            });
+                          }),
+                    ))
+                    .toList(),
+              ),
+            ),
             _sortSection(),
             Consumer<FilterProvider>(builder: (context, filterProvider, child) {
               return ListView.builder(
@@ -51,16 +77,11 @@ class _FilterScreenState extends State<FilterScreen> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Theme(
-                        data: ThemeData()
-                            .copyWith(dividerColor: Colors.transparent),
+                        data: ThemeData().copyWith(
+                          dividerColor: Colors.transparent,
+                        ),
                         child: ExpansionTile(
-                          title: Text(
-                            "${filterItem.name} (${filterItem.selectedItemCount})",
-                            style: const TextStyle(
-                              color: ColorResources.TEXT_COLOR,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          title: FilterItemHeading(filterItem: filterItem),
                           children: [
                             ListView.builder(
                               shrinkWrap: true,
@@ -71,7 +92,8 @@ class _FilterScreenState extends State<FilterScreen> {
                                     filterItem.taxonomies[index];
                                 return RadioListTile(
                                   toggleable: true,
-                                  activeColor: ColorResources.RADIO_BUTTON_COLOR,
+                                  activeColor:
+                                      ColorResources.RADIO_BUTTON_COLOR,
                                   title: Text(taxonomyItem.name!),
                                   value: taxonomyItem,
                                   groupValue: selectedTaxonomyList
@@ -79,18 +101,21 @@ class _FilterScreenState extends State<FilterScreen> {
                                       ? taxonomyItem
                                       : null,
                                   onChanged: (value) {
-                                   print("value:$value");
+                                    print("value:$value");
                                     setState(() {
                                       if (selectedTaxonomyList
-                                          .contains(value) || value == null) 
-                                          {
-                                        selectedTaxonomyList.remove(taxonomyItem);
-                                        filterItem.selectedItemCount = filterItem.selectedItemCount! - 1;
+                                              .contains(value) ||
+                                          value == null) {
+                                        selectedTaxonomyList
+                                            .remove(taxonomyItem);
+                                        filterItem.selectedItemCount =
+                                            filterItem.selectedItemCount! - 1;
                                       } else {
                                         selectedTaxonomyList.add(value);
-                                         filterItem.selectedItemCount = filterItem.selectedItemCount! + 1;
+                                        filterItem.selectedItemCount =
+                                            filterItem.selectedItemCount! + 1;
                                       }
-                                    print('selected: $selectedTaxonomyList');
+                                      print('selected: $selectedTaxonomyList');
                                     });
                                   },
                                 );
