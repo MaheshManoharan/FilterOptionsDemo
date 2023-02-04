@@ -16,7 +16,12 @@ class FilterItemHeading extends StatelessWidget {
     return RichText(
       text: TextSpan(
           text: "${filterItem.name}",
-          style: TextStyle(color: ColorResources.TEXT_COLOR),
+                 style: TextStyle(
+                                color: ColorResources.TEXT_COLOR,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+
           children: [
             if (filterItem.selectedItemCount! > 0)
               TextSpan(
