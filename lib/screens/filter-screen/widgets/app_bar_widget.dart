@@ -21,7 +21,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget
         ),
       ),
       leading: CupertinoNavigationBarBackButton(
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          // Navigator.of(context).pop();
+        },
         color: ColorResources.TEXT_COLOR,
       ),
     );
