@@ -55,7 +55,7 @@ class _FilterScreenState extends State<FilterScreen> {
                             .copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
                           title: Text(
-                            filterItem.name,
+                            "${filterItem.name} (${filterItem.selectedItemCount})",
                             style: const TextStyle(
                               color: ColorResources.TEXT_COLOR,
                               fontWeight: FontWeight.bold,
@@ -82,11 +82,13 @@ class _FilterScreenState extends State<FilterScreen> {
                                    print("value:$value");
                                     setState(() {
                                       if (selectedTaxonomyList
-                                          .contains(value) || value == null) {
-                                            print('inside contains');
+                                          .contains(value) || value == null) 
+                                          {
                                         selectedTaxonomyList.remove(taxonomyItem);
+                                        filterItem.selectedItemCount = filterItem.selectedItemCount! - 1;
                                       } else {
                                         selectedTaxonomyList.add(value);
+                                         filterItem.selectedItemCount = filterItem.selectedItemCount! + 1;
                                       }
                                     print('selected: $selectedTaxonomyList');
                                     });
