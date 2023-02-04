@@ -45,32 +45,34 @@ class FilterProvider extends ChangeNotifier {
     final filterModel = filterModelFromJson(jsonData.toString());
 
     data = filterModel.data;
-
-    cuisineHeading = data[0].name;
-    cusineTaxonomies = data[0].taxonomies;
-
-    suitableDietsTaxonomies = data[1].taxonomies;
-    suitableDietsHeading  = data[1].name;
-
-    experienceTaxonomies = data[2].taxonomies;
-    experienceHeading = data[2].name;
-
-    mealPeriodsTaxonomies = data[3].taxonomies;
-    mealPeriodHeading = data[3].name;
-
-    dressCodesTaxonomies = data[4].taxonomies;
-    dressCodeHeading = data[4].name;
-
-    neighbourHoodsTaxonomies = data[5].taxonomies;
-    neighbourhoodHeading = data[5].name;
-
     sortByTaxonomies = data[6].taxonomies;
-    sortHeading = data[6].name;
-
-    priceRangeTaxonomies = data[7].taxonomies;
-    priceRangeHeading = data[7].name;
+   sortHeading = data[6].name;
 
     notifyListeners();
+
+
+    // cuisineHeading = data[0].name;
+    // cusineTaxonomies = data[0].taxonomies;
+
+    // suitableDietsTaxonomies = data[1].taxonomies;
+    // suitableDietsHeading  = data[1].name;
+
+    // experienceTaxonomies = data[2].taxonomies;
+    // experienceHeading = data[2].name;
+
+    // mealPeriodsTaxonomies = data[3].taxonomies;
+    // mealPeriodHeading = data[3].name;
+
+    // dressCodesTaxonomies = data[4].taxonomies;
+    // dressCodeHeading = data[4].name;
+
+    // neighbourHoodsTaxonomies = data[5].taxonomies;
+    // neighbourhoodHeading = data[5].name;
+
+
+    // priceRangeTaxonomies = data[7].taxonomies;
+    // priceRangeHeading = data[7].name;
+
 
   }
 }

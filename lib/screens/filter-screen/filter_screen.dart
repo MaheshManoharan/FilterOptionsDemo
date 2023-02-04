@@ -77,14 +77,12 @@ class _FilterScreenState extends State<FilterScreen> {
                               onSelected: (value) {
                                 setState(() {
                                   selectedTaxonomyList.remove(e);
-
-                            for (var element in selectedFilterItemList) {
-                              if(element.taxonomies.contains(e))
-                              {
-                                element.selectedItemCount = element.selectedItemCount! - 1 ;
-                              }
-                            }
-
+                                  for (var element in selectedFilterItemList) {
+                                    if (element.taxonomies.contains(e)) {
+                                      element.selectedItemCount =
+                                          element.selectedItemCount! - 1;
+                                    }
+                                  }
                                 });
                               }),
                         ))
@@ -117,8 +115,11 @@ class _FilterScreenState extends State<FilterScreen> {
                           title: RichText(
                             text: TextSpan(
                                 text: "${filterItem.name}",
-                                style:
-                                    TextStyle(color: ColorResources.TEXT_COLOR),
+                                style: TextStyle(
+                                  color: ColorResources.TEXT_COLOR,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                                 children: [
                                   if (filterItem.selectedItemCount! > 0)
                                     TextSpan(
@@ -160,8 +161,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                         filterItem.selectedItemCount =
                                             filterItem.selectedItemCount! - 1;
 
-                                            
-                                        if (filterItem.selectedItemCount != 0 ) {
+                                        if (filterItem.selectedItemCount != 0) {
                                           selectedFilterItemList
                                               .remove(filterItem);
                                         }
@@ -209,12 +209,15 @@ class _FilterScreenState extends State<FilterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              filterProvider.sortHeading,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: ColorResources.TEXT_COLOR,
-                fontSize: 20,
+            Padding(
+              padding: const EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL,),
+              child: Text(
+                filterProvider.sortHeading,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: ColorResources.TEXT_COLOR,
+                  fontSize: 20,
+                ),
               ),
             ),
             ListView.builder(
@@ -234,7 +237,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   groupValue: _sortValue,
                   onChanged: (value) {
-                    print('value: $value');
                     setState(() {
                       _sortValue = value!;
                     });
