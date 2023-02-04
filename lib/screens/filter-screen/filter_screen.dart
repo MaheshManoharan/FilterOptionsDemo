@@ -1,5 +1,6 @@
 import 'package:filter_options_demo/model/response/filter_model.dart';
 import 'package:filter_options_demo/provider/filter_provider.dart';
+import 'package:filter_options_demo/screens/filter-screen/widgets/sort_section_widget.dart';
 import 'package:filter_options_demo/utils/color_resources.dart';
 import 'package:filter_options_demo/utils/dimensions.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  String _sortValue = 'nearest_to_me';
+ 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   List<Taxonomy> selectedTaxonomyList = [];
@@ -25,7 +26,10 @@ class _FilterScreenState extends State<FilterScreen> {
   void initState() {
     super.initState();
     Provider.of<FilterProvider>(context, listen: false).getFilterData();
+    _snackBarMethod();
+  }
 
+  void _snackBarMethod() {
     Future.delayed(Duration(seconds: 3)).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -89,7 +93,8 @@ class _FilterScreenState extends State<FilterScreen> {
                     .toList(),
               ),
             ),
-            _sortSection(),
+            SortSectionWidget(),
+            
             Consumer<FilterProvider>(builder: (context, filterProvider, child) {
               return ListView.builder(
                   itemCount: filterProvider.data.length,
@@ -195,61 +200,122 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  Consumer<FilterProvider> _sortSection() {
-    return Consumer<FilterProvider>(builder: (context, filterProvider, child) {
-      return Container(
-        margin: const EdgeInsets.symmetric(
-            horizontal: Dimensions.PADDING_SIZE_LARGE,
-            vertical: Dimensions.PADDING_SIZE_SMALL),
-        padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL,),
-              child: Text(
-                filterProvider.sortHeading,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: ColorResources.TEXT_COLOR,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: filterProvider.sortByTaxonomies.length,
-              itemBuilder: ((context, index) {
-                final sortItem = filterProvider.sortByTaxonomies[index];
-                return RadioListTile(
-                  activeColor: ColorResources.RADIO_BUTTON_COLOR,
-                  value: sortItem.slug,
-                  title: Text(
-                    sortItem.name.toString(),
-                    style: const TextStyle(
-                      color: ColorResources.TEXT_COLOR,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  groupValue: filterProvider.sortValue,
-                  onChanged: (value) {
-                    // setState(() {
-                    //   _sortValue = value!;
-                    // });
-                  filterProvider.updateSortValue(value);
-            
-
-                  },
-                );
-              }),
-            ),
-          ],
-        ),
-      );
-    });
-  }
 }
+
+//   Consumer<FilterProvider> _sortSection() {
+//     return Consumer<FilterProvider>(builder: (context, filterProvider, child) {
+//       return Container(
+//         margin: const EdgeInsets.symmetric(
+//             horizontal: Dimensions.PADDING_SIZE_LARGE,
+//             vertical: Dimensions.PADDING_SIZE_SMALL),
+//         padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(8.0),
+//         ),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Padding(
+//               padding: const EdgeInsets.only(
+//                 left: Dimensions.PADDING_SIZE_SMALL,
+//               ),
+//               child: Text(
+//                 filterProvider.sortHeading,
+//                 style: const TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   color: ColorResources.TEXT_COLOR,
+//                   fontSize: 20,
+//                 ),
+//               ),
+//             ),
+//             ListView.builder(
+//               shrinkWrap: true,
+//               itemCount: filterProvider.sortByTaxonomies.length,
+//               itemBuilder: ((context, index) {
+//                 final sortItem = filterProvider.sortByTaxonomies[index];
+//                 return RadioListTile(
+//                   activeColor: ColorResources.RADIO_BUTTON_COLOR,
+//                   value: sortItem.slug,
+//                   title: Text(
+//                     sortItem.name.toString(),
+//                     style: const TextStyle(
+//                       color: ColorResources.TEXT_COLOR,
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                   groupValue: filterProvider.sortValue,
+//                   onChanged: (value) {
+//                     // setState(() {
+//                     //   _sortValue = value!;
+//                     // });
+//                     filterProvider.updateSortValue(value);
+//                   },
+//                 );
+//               }),
+//             ),
+//           ],
+//         ),
+//       );
+//     });
+//   }
+// }
+
+
+//  _sortSection(),
+            //        Consumer<FilterProvider>(builder: (context, filterProvider, child) {
+            //   return Container(
+            //     margin: const EdgeInsets.symmetric(
+            //         horizontal: Dimensions.PADDING_SIZE_LARGE,
+            //         vertical: Dimensions.PADDING_SIZE_SMALL),
+            //     padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //       borderRadius: BorderRadius.circular(8.0),
+            //     ),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Padding(
+            //           padding: const EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL,),
+            //           child: Text(
+            //             filterProvider.sortHeading,
+            //             style: const TextStyle(
+            //               fontWeight: FontWeight.bold,
+            //               color: ColorResources.TEXT_COLOR,
+            //               fontSize: 20,
+            //             ),
+            //           ),
+            //         ),
+            //         ListView.builder(
+            //           shrinkWrap: true,
+            //           itemCount: filterProvider.sortByTaxonomies.length,
+            //           itemBuilder: ((context, index) {
+            //             final sortItem = filterProvider.sortByTaxonomies[index];
+            //             return RadioListTile(
+            //               activeColor: ColorResources.RADIO_BUTTON_COLOR,
+            //               value: sortItem.slug,
+            //               title: Text(
+            //                 sortItem.name.toString(),
+            //                 style: const TextStyle(
+            //                   color: ColorResources.TEXT_COLOR,
+            //                   fontWeight: FontWeight.w500,
+            //                 ),
+            //               ),
+            //               groupValue: filterProvider.sortValue,
+            //               onChanged: (value) {
+            //                 // setState(() {
+            //                 //   _sortValue = value!;
+            //                 // });
+            //               filterProvider.updateSortValue(value);
+            //               },
+            //             );
+            //           }),
+            //         ),
+            //       ],
+            //     ),
+            //   );
+            // })
+            // ,
+
+            //  String _sortValue = 'nearest_to_me';
