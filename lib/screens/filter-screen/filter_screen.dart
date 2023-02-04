@@ -84,7 +84,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                       if (selectedTaxonomyList
                                           .contains(value) || value == null) {
                                             print('inside contains');
-                                        selectedTaxonomyList.remove(value);
+                                        selectedTaxonomyList.remove(taxonomyItem);
                                       } else {
                                         selectedTaxonomyList.add(value);
                                       }
