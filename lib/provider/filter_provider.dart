@@ -1,39 +1,28 @@
 import 'package:filter_options_demo/repository/filter_repo.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../model/response/filter_model.dart';
 
-class FilterProvider extends ChangeNotifier {
+class FilterProvider extends ChangeNotifier 
+{
+
   FilterRepo filterRepo;
 
   FilterProvider({required this.filterRepo});
 
   late List<Datum> data;
   
-  late List<Taxonomy> cusineTaxonomies;
-  late String cuisineHeading;
-  
-  late List<Taxonomy> suitableDietsTaxonomies;
-  late  String suitableDietsHeading;
-
-  late List<Taxonomy> experienceTaxonomies;
-  late String experienceHeading;
-
-  late List<Taxonomy> mealPeriodsTaxonomies;
-  late String mealPeriodHeading;
-
-  late List<Taxonomy> dressCodesTaxonomies;
-  late String dressCodeHeading;
-
-  late List<Taxonomy> neighbourHoodsTaxonomies;
-  late String neighbourhoodHeading;
-
   late List<Taxonomy> sortByTaxonomies;
   late String sortHeading;
 
-  late List<Taxonomy> priceRangeTaxonomies;
-  late String priceRangeHeading;
+  String _sortValue = 'nearest_to_me';
+  String get sortValue => _sortValue; 
 
+
+  void updateSortValue(value)
+  {
+    _sortValue = value;
+    notifyListeners();
+  }
 
 
 
@@ -46,9 +35,12 @@ class FilterProvider extends ChangeNotifier {
 
     data = filterModel.data;
     sortByTaxonomies = data[6].taxonomies;
-   sortHeading = data[6].name;
+    sortHeading = data[6].name;
 
     notifyListeners();
+
+  }
+}
 
 
     // cuisineHeading = data[0].name;
@@ -74,5 +66,23 @@ class FilterProvider extends ChangeNotifier {
     // priceRangeHeading = data[7].name;
 
 
-  }
-}
+  // late List<Taxonomy> cusineTaxonomies;
+  // late String cuisineHeading;
+  
+  // late List<Taxonomy> suitableDietsTaxonomies;
+  // late  String suitableDietsHeading;
+
+  // late List<Taxonomy> experienceTaxonomies;
+  // late String experienceHeading;
+
+  // late List<Taxonomy> mealPeriodsTaxonomies;
+  // late String mealPeriodHeading;
+
+  // late List<Taxonomy> dressCodesTaxonomies;
+  // late String dressCodeHeading;
+
+  // late List<Taxonomy> neighbourHoodsTaxonomies;
+  // late String neighbourhoodHeading;
+
+//  late List<Taxonomy> priceRangeTaxonomies;
+//   late String priceRangeHeading;

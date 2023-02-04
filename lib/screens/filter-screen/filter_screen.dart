@@ -235,11 +235,14 @@ class _FilterScreenState extends State<FilterScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  groupValue: _sortValue,
+                  groupValue: filterProvider.sortValue,
                   onChanged: (value) {
-                    setState(() {
-                      _sortValue = value!;
-                    });
+                    // setState(() {
+                    //   _sortValue = value!;
+                    // });
+                  filterProvider.updateSortValue(value);
+            
+
                   },
                 );
               }),
