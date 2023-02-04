@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 FilterModel filterModelFromJson(String str) => FilterModel.fromJson(json.decode(str));
 
 String filterModelToJson(FilterModel data) => json.encode(data.toJson());
@@ -48,7 +50,8 @@ class Datum {
     };
 }
 
-class Taxonomy {
+class Taxonomy extends Equatable
+{
     Taxonomy({
         this.id,
         this.guid,
@@ -82,6 +85,9 @@ class Taxonomy {
         "city": city,
         "locations": locations == null ? [] : List<dynamic>.from(locations!.map((x) => x.toJson())),
     };
+    
+      @override
+      List<Object?> get props => [id, guid, slug, name, city, locations];
 }
 
 class Location {

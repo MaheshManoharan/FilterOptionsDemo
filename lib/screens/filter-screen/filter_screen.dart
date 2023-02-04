@@ -1,3 +1,4 @@
+import 'package:filter_options_demo/model/response/filter_model.dart';
 import 'package:filter_options_demo/provider/filter_provider.dart';
 import 'package:filter_options_demo/utils/color_resources.dart';
 import 'package:filter_options_demo/utils/dimensions.dart';
@@ -15,9 +16,10 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   String _sortValue = 'nearest_to_me';
 
+  List<Taxonomy> selectedTaxonomyList = [];
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<FilterProvider>(context, listen: false).getFilterData();
   }
@@ -45,10 +47,12 @@ class _FilterScreenState extends State<FilterScreen> {
                       padding:
                           const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0)),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                       child: Theme(
-                        data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                        data: ThemeData()
+                            .copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
                           title: Text(
                             filterItem.name,
@@ -61,16 +65,35 @@ class _FilterScreenState extends State<FilterScreen> {
                             ListView.builder(
                               shrinkWrap: true,
                               primary: false,
-                                itemCount: filterItem.taxonomies.length,
-                                itemBuilder: ((context, index) {
-                                  final taxonomyItem =
-                                      filterItem.taxonomies[index];
-                                  return RadioListTile(
-                                    title: Text(taxonomyItem.name!),
-                                      value: taxonomyItem.name,
-                                      groupValue: null,
-                                      onChanged: null);
-                                }))
+                              itemCount: filterItem.taxonomies.length,
+                              itemBuilder: ((context, index) {
+                                final taxonomyItem =
+                                    filterItem.taxonomies[index];
+                                return RadioListTile(
+                                  toggleable: true,
+                                  activeColor: ColorResources.RADIO_BUTTON_COLOR,
+                                  title: Text(taxonomyItem.name!),
+                                  value: taxonomyItem,
+                                  groupValue: selectedTaxonomyList
+                                          .contains(taxonomyItem)
+                                      ? taxonomyItem
+                                      : null,
+                                  onChanged: (value) {
+                                   print("value:$value");
+                                    setState(() {
+                                      if (selectedTaxonomyList
+                                          .contains(value) || value == null) {
+                                            print('inside contains');
+                                        selectedTaxonomyList.remove(value);
+                                      } else {
+                                        selectedTaxonomyList.add(value);
+                                      }
+                                    print('selected: $selectedTaxonomyList');
+                                    });
+                                  },
+                                );
+                              }),
+                            )
                           ],
                         ),
                       ),
@@ -89,9 +112,11 @@ class _FilterScreenState extends State<FilterScreen> {
         margin: const EdgeInsets.symmetric(
             horizontal: Dimensions.PADDING_SIZE_LARGE,
             vertical: Dimensions.PADDING_SIZE_SMALL),
-        padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+        padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(8.0)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
