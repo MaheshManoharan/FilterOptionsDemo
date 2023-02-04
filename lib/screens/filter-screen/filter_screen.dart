@@ -80,13 +80,13 @@ class _FilterScreenState extends State<FilterScreen> {
                               ),
                               onSelected: (value) {
                                 setState(() {
-                                  selectedTaxonomyList.remove(e);
                                   for (var element in selectedFilterItemList) {
                                     if (element.taxonomies.contains(e)) {
                                       element.selectedItemCount =
                                           element.selectedItemCount! - 1;
                                     }
                                   }
+                                  selectedTaxonomyList.remove(e);
                                 });
                               }),
                         ))

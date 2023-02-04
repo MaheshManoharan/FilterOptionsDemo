@@ -40,6 +40,7 @@ class SortSectionWidget extends StatelessWidget {
             ),
             ListView.builder(
               shrinkWrap: true,
+              primary: false,
               itemCount: filterProvider.sortByTaxonomies.length,
               itemBuilder: ((context, index) {
                 final sortItem = filterProvider.sortByTaxonomies[index];
