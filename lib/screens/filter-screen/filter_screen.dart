@@ -16,18 +16,37 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   String _sortValue = 'nearest_to_me';
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   List<Taxonomy> selectedTaxonomyList = [];
+  List<Datum> selectedFilterItemList = [];
 
   @override
   void initState() {
     super.initState();
     Provider.of<FilterProvider>(context, listen: false).getFilterData();
+
+    Future.delayed(Duration(seconds: 3)).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          elevation: 6.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+          ),
+          backgroundColor: ColorResources.SNACKBAR_COLOR,
+          behavior: SnackBarBehavior.floating,
+          content: Text("SHOW 60 RESULTS"),
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       backgroundColor: ColorResources.BACKGROUND_COLOR,
       appBar: AppBarWidget(),
       body: SingleChildScrollView(
@@ -35,26 +54,40 @@ class _FilterScreenState extends State<FilterScreen> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
+                horizontal: 5,
+                vertical: Dimensions.PADDING_SIZE_SMALL,
+              ),
               child: Wrap(
                 children: selectedTaxonomyList
                     .map((e) => Padding(
-                      padding: const EdgeInsets.only(right: 2.0),
-                      child: FilterChip(
-                          showCheckmark: false,
-                          backgroundColor: ColorResources.TOP_BUTTON_COLOR,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          avatar: Center(child: Icon(Icons.close)),
-                          label: Text(e.name!),
-                          onSelected: (value) {
-                            setState(() {
-                              selectedTaxonomyList.remove(e);
-                            });
-                          }),
-                    ))
+                          padding: const EdgeInsets.only(right: 2.0),
+                          child: FilterChip(
+                              showCheckmark: false,
+                              backgroundColor: ColorResources.TOP_BUTTON_COLOR,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              avatar: Icon(Icons.close),
+                              label: Text(
+                                e.name!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                              onSelected: (value) {
+                                setState(() {
+                                  selectedTaxonomyList.remove(e);
+
+                            for (var element in selectedFilterItemList) {
+                              if(element.taxonomies.contains(e))
+                              {
+                                element.selectedItemCount = element.selectedItemCount! - 1 ;
+                              }
+                            }
+
+                                });
+                              }),
+                        ))
                     .toList(),
               ),
             ),
@@ -81,7 +114,23 @@ class _FilterScreenState extends State<FilterScreen> {
                           dividerColor: Colors.transparent,
                         ),
                         child: ExpansionTile(
-                          title: FilterItemHeading(filterItem: filterItem),
+                          title: RichText(
+                            text: TextSpan(
+                                text: "${filterItem.name}",
+                                style:
+                                    TextStyle(color: ColorResources.TEXT_COLOR),
+                                children: [
+                                  if (filterItem.selectedItemCount! > 0)
+                                    TextSpan(
+                                        text:
+                                            "   (${filterItem.selectedItemCount})",
+                                        style: TextStyle(
+                                          color:
+                                              ColorResources.RADIO_BUTTON_COLOR,
+                                          fontWeight: FontWeight.bold,
+                                        ))
+                                ]),
+                          ),
                           children: [
                             ListView.builder(
                               shrinkWrap: true,
@@ -110,10 +159,23 @@ class _FilterScreenState extends State<FilterScreen> {
                                             .remove(taxonomyItem);
                                         filterItem.selectedItemCount =
                                             filterItem.selectedItemCount! - 1;
+
+                                            
+                                        if (filterItem.selectedItemCount != 0 ) {
+                                          selectedFilterItemList
+                                              .remove(filterItem);
+                                        }
                                       } else {
                                         selectedTaxonomyList.add(value);
                                         filterItem.selectedItemCount =
                                             filterItem.selectedItemCount! + 1;
+
+                                        if (filterItem.selectedItemCount != 0 &&
+                                            !selectedFilterItemList
+                                                .contains(filterItem)) {
+                                          selectedFilterItemList
+                                              .add(filterItem);
+                                        }
                                       }
                                       print('selected: $selectedTaxonomyList');
                                     });
